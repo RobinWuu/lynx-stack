@@ -1,0 +1,109 @@
+packages/lynx/create-lynx-library/template-napi-native-module/ios/addon_use.h.tmpl
+  s_c7ffe733b4b67c::t_5cc22e8a26f1e2 13-14
+  s_c7ffe733b4b67c::t_a2676ec5d9da21 10-12
+  s_c7ffe733b4b67c::t_6736b9bbddf024 15-17
+  s_c7ffe733b4b67c::t_758265f51fb11d 1-9,18-22
+packages/lynx/autolink-codegen/test/codegen.test.ts
+  s_c7ffe733b4b67c::t_289cfb093d7212 249,251,288-290,293-297,306-323,329-338,431-507,509-511,514-522,525,530-532,536
+  s_c7ffe733b4b67c::t_fbab66d3818e10 250
+  s_c7ffe733b4b67c::t_33a050691481eb 291-292
+  s_c7ffe733b4b67c::t_7a0666126676b1 508
+  s_c7ffe733b4b67c::t_660d06d8314770 512-513
+  s_c7ffe733b4b67c::t_045f1eb34381ce 523-524
+  s_c7ffe733b4b67c::t_57ae21a3d2c621 526-529
+  s_c7ffe733b4b67c::t_39fdeac46431de 533-535
+  s_c7ffe733b4b67c::t_9d036ca17beca8 282-284
+packages/lynx/create-lynx-library/test/create.test.ts
+  s_c7ffe733b4b67c::t_f966c570daaa54 138,141,144,147,150,153,156,159,162,205,208,211,343,382,385,388,391,394,397,400,414,417,420,423,426,429,432,435,438,441,444,447,450,453,456,459,462,465,468,471,474,477,480-482,488,494,501,607,610,613,616,637,640,654,657,660,663,720,723,726,815,818,821,824,827
+  s_c7ffe733b4b67c::t_b804fe03b5d02e 136-137
+  s_c7ffe733b4b67c::t_d293ad20aef976 139-140
+  s_c7ffe733b4b67c::t_0ed61a5f096b11 142-143
+  s_c7ffe733b4b67c::t_a00105043ca11b 145-146
+  s_c7ffe733b4b67c::t_8f865715f8f41e 148-149
+  s_c7ffe733b4b67c::t_9d7690b583422d 151-152
+  s_c7ffe733b4b67c::t_dc51de36dd990c 154-155
+  s_c7ffe733b4b67c::t_cf734345413dce 157-158
+  s_c7ffe733b4b67c::t_b75913676b8410 160-161
+  s_c7ffe733b4b67c::t_f4dcbd1cb7beca 203-204
+  s_c7ffe733b4b67c::t_74d83f92bc547c 206-207
+  s_c7ffe733b4b67c::t_042a5416061a12 209-210
+  s_c7ffe733b4b67c::t_0e963964f7d589 341-342
+  s_c7ffe733b4b67c::t_b7c9ea246cdebc 380-381
+  s_c7ffe733b4b67c::t_2d058761afd10e 383-384
+  s_c7ffe733b4b67c::t_1af9c575955a86 386-387
+  s_c7ffe733b4b67c::t_b39131725a4036 389-390
+  s_c7ffe733b4b67c::t_1d1df8475c46f0 392-393
+  s_c7ffe733b4b67c::t_e837c7e9654bfd 395-396
+  s_c7ffe733b4b67c::t_2cc218cfe3d29e 398-399
+  s_c7ffe733b4b67c::t_afc3d7c224ee12 401-403,411-413
+  s_c7ffe733b4b67c::t_b692990a459355 415-416
+  s_c7ffe733b4b67c::t_97aab2ae3143fd 418-419
+  s_c7ffe733b4b67c::t_756c86918a66e5 421-422
+  s_c7ffe733b4b67c::t_d124ba7d6ef287 424-425
+  s_c7ffe733b4b67c::t_3f8ebcf4f647e7 427-428
+  s_c7ffe733b4b67c::t_484af523262166 430-431
+  s_c7ffe733b4b67c::t_062367714d38fc 433-434
+  s_c7ffe733b4b67c::t_81360e5b2cac67 436-437
+  s_c7ffe733b4b67c::t_2833370c840412 439-440
+  s_c7ffe733b4b67c::t_ff982ab1210ae7 442-443
+  s_c7ffe733b4b67c::t_6b1fe182858f76 445-446
+  s_c7ffe733b4b67c::t_b6e3d639a2d607 448-449
+  s_c7ffe733b4b67c::t_9f719474224993 451-452
+  s_c7ffe733b4b67c::t_9d9d5dfff2e1d3 454-455
+  s_c7ffe733b4b67c::t_aced26eb1137f0 457-458
+  s_c7ffe733b4b67c::t_15962580a1f001 460-461
+  s_c7ffe733b4b67c::t_0c6acae4c6c07b 463-464
+  s_c7ffe733b4b67c::t_e86141f9ba76ef 466-467
+  s_c7ffe733b4b67c::t_d80ba4f1b2ff22 469-470
+  s_c7ffe733b4b67c::t_02f256b1292e62 472-473
+  s_c7ffe733b4b67c::t_7ed5b2417aa997 475-476
+  s_c7ffe733b4b67c::t_bf6d3f06df0dd9 478-479
+  s_c7ffe733b4b67c::t_b39adc1dfba7b3 483-487
+  s_c7ffe733b4b67c::t_d25338bc03bd0f 489-493
+  s_c7ffe733b4b67c::t_bd8080e4f782d8 495-500
+  s_c7ffe733b4b67c::t_15a8f76abb0f75 502-504
+  s_c7ffe733b4b67c::t_aeea23e4b40dea 605-606
+  s_c7ffe733b4b67c::t_9f1889c852ae9b 608-609
+  s_c7ffe733b4b67c::t_a37d76308c3376 611-612
+  s_c7ffe733b4b67c::t_4b97723cfdb9ae 614-615
+  s_c7ffe733b4b67c::t_e6da92cdbc4d95 635-636
+  s_c7ffe733b4b67c::t_bb7ec5400ce319 638-639
+  s_c7ffe733b4b67c::t_b7e37730154535 652-653
+  s_c7ffe733b4b67c::t_7c33a8594032dd 655-656
+  s_c7ffe733b4b67c::t_dfd23efd71f888 658-659
+  s_c7ffe733b4b67c::t_0efc6168760afd 661-662
+  s_c7ffe733b4b67c::t_ab1c3f0b75b17b 717-719
+  s_c7ffe733b4b67c::t_071dfd05ac9b21 721-722
+  s_c7ffe733b4b67c::t_27a1685db9b985 724-725
+  s_c7ffe733b4b67c::t_ea6759598ff3b1 727-728
+  s_c7ffe733b4b67c::t_808163467e958d 813-814
+  s_c7ffe733b4b67c::t_f492fbfb4ae16b 816-817
+  s_c7ffe733b4b67c::t_5276125cd8944b 819-820
+  s_c7ffe733b4b67c::t_46adcd53ff2b16 822-823
+  s_c7ffe733b4b67c::t_67ce96f0b5ccee 825-826
+  s_c7ffe733b4b67c::t_f19cce26980e90 4,19-27,185,233,358-359,404-410,505-522,578,580-582,706-716,749,756,934-937,942-943
+packages/lynx/autolink-codegen/src/index.ts
+  s_c7ffe733b4b67c::t_e5e80f41189bdd 408-417,1326-1446,1464-1516,1537
+  s_c7ffe733b4b67c::t_c0f1509184b8f9 407
+  s_c7ffe733b4b67c::t_22affefde0bdca 1517-1519,1534-1536
+  s_c7ffe733b4b67c::t_5e955f98e3fc25 1538-1540
+  s_c7ffe733b4b67c::t_a722524fb1e6ad 312-316,376-393,404,1520-1533,1541-1577,1628-1630,1647-1669,1697,1704-1716
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "42192d95a6a557bb5d10d3b7ff92cef9326f50a0",
+  "prompts": {},
+  "sessions": {
+    "s_c7ffe733b4b67c": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019f84ab-29b6-7752-87f0-d4cca7db3b64",
+        "model": "unknown"
+      },
+      "human_author": "RobinWuu <46469310+RobinWuu@users.noreply.github.com>"
+    }
+  },
+  "attestation_metadata": {},
+  "remote_transcripts": {}
+}
