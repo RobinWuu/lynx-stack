@@ -1,0 +1,27 @@
+packages/lynx/autolink-codegen/src/index.ts
+  s_c7ffe733b4b67c::t_e5e80f41189bdd 408-412,414-415,1468-1481,1483,1515-1516
+packages/lynx/autolink-codegen/test/codegen.test.ts
+  s_c7ffe733b4b67c::t_289cfb093d7212 293-297,461-463,473-507
+packages/lynx/create-lynx-library/template-napi-native-module/ios/addon_use.h.tmpl
+  s_c7ffe733b4b67c::t_5cc22e8a26f1e2 13-14
+packages/lynx/create-lynx-library/test/create.test.ts
+  s_c7ffe733b4b67c::t_f966c570daaa54 480-482
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "f3b0ea47d5454bbf72215638ea28dae2516bfb4e",
+  "prompts": {},
+  "sessions": {
+    "s_c7ffe733b4b67c": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019f84ab-29b6-7752-87f0-d4cca7db3b64",
+        "model": "unknown"
+      },
+      "human_author": "RobinWuu <46469310+RobinWuu@users.noreply.github.com>"
+    }
+  },
+  "attestation_metadata": {},
+  "remote_transcripts": {}
+}
