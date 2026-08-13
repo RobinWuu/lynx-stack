@@ -1223,7 +1223,9 @@ function platformManifestEntries(context: TemplateContext): string {
   if (context.platforms.has('android')) {
     entries.push(`    "android": {
       "packageName": ${JSON.stringify(context.androidPackage)},
-      "sourceDir": "android"${androidNodeApiAddonsManifest(context)}
+      "sourceDir": "android"${androidProviderClassManifest(context)}${
+      androidNodeApiAddonsManifest(context)
+    }
     }`);
   }
 
@@ -1255,6 +1257,20 @@ function platformManifestEntries(context: TemplateContext): string {
   }
 
   return entries.join(',\n');
+}
+
+function androidProviderClassManifest(context: TemplateContext): string {
+  if (
+    !context.features.has('napi-native-module')
+    || context.features.has('native-module')
+    || context.features.has('element')
+    || context.features.has('service')
+  ) {
+    return '';
+  }
+
+  return `,
+      "providerClassName": null`;
 }
 
 function androidNodeApiAddonsManifest(context: TemplateContext): string {

@@ -592,6 +592,10 @@ describe('create-lynx-library', () => {
       },
     ]);
     expect(
+      readJson<Manifest>(dir, 'lynx.lib.json').platforms.android
+        ?.providerClassName,
+    ).toBeNull();
+    expect(
       readJson<Manifest>(dir, 'lynx.lib.json').platforms.ios?.nodeApiAddons,
     ).toEqual([
       {
@@ -809,6 +813,28 @@ describe('create-lynx-library', () => {
     expect(read(dir, 'README.md')).not.toContain(
       '## Lynxtron Library Target',
     );
+    expect(
+      readJson<Manifest>(dir, 'lynx.lib.json').platforms.android
+        ?.providerClassName,
+    ).toBeNull();
+  });
+
+  it('keeps the Android provider for mixed NAPI libraries', () => {
+    const dir = createTempDir('android-mixed-napi');
+
+    createLynxLibrary({
+      dir,
+      features: ['napi-native-module', 'element'],
+      platforms: ['android'],
+      packageName: 'android-mixed-library',
+      androidPackage: 'com.example.androidmixed',
+      moduleName: 'AndroidMixedModule',
+      elementName: 'x-android-mixed',
+    });
+
+    expect(
+      readJson<Manifest>(dir, 'lynx.lib.json').platforms.android,
+    ).not.toHaveProperty('providerClassName');
   });
 
   it('creates iOS-only projects without Android files', () => {
@@ -1074,7 +1100,10 @@ function readJson<T>(root: string, file: string): T {
 
 interface Manifest {
   platforms: Record<string, unknown> & {
-    android?: { nodeApiAddons?: unknown[] };
+    android?: {
+      nodeApiAddons?: unknown[];
+      providerClassName?: string | null;
+    };
     ios?: { nodeApiAddons?: unknown[] };
   };
 }

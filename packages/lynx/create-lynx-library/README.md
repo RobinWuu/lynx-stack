@@ -60,7 +60,10 @@ and/or iOS is selected, the package declares Node-API addons in `lynx.lib.json`
 under those platform entries. The addon name must be a simple identifier such
 as `StorageModule`; scoped npm package names are supported for the package
 itself, but not for the addon name. A library currently supports one NAPI native
-module declaration.
+module declaration. Android projects that contain only the NAPI feature set
+`providerClassName` to `null`, so the AutoLink client loads the addon without
+trying to reflect a Java `LynxLibraryProviderImpl`. Mixed libraries that also
+contain a platform Native Module, Element, or Service retain the provider.
 
 Edit `types/napi-native-module.d.ts` to describe the JavaScript API:
 
