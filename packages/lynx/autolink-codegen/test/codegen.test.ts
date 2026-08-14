@@ -151,6 +151,68 @@ export declare class FormattedModule {
     ]);
   });
 
+  it('supports optional parameters and flat named object interfaces', () => {
+    const root = createFixture({
+      manifest: {
+        platforms: {
+          android: {
+            packageName: 'com.example.scanner',
+            nodeApiAddons: [{ name: 'ScannerModule' }],
+          },
+          lynxtron: { path: 'dist' },
+        },
+      },
+      types: '',
+    });
+    writeTypesFile(
+      root,
+      'native-module.d.ts',
+      `/** @lynxmodule */
+export declare class ScannerModule {
+  scan(image: ArrayBuffer, quality?: number): ScanResult;
+}
+
+export interface ScanResult {
+  detected: boolean;
+  width: number;
+  image: ArrayBuffer;
+  note?: string | null;
+}
+`,
+    );
+
+    const files = generate({ root });
+    const facade =
+      files.find((file) => file.path === 'generated/ScannerModule.ts')?.content
+        ?? '';
+    const implementation =
+      files.find((file) => file.path === 'shared/nativeModule/ScannerModule.cc')
+        ?.content ?? '';
+
+    expect(facade).toContain('quality?: number');
+    expect(facade).toContain(
+      'scan(image: ArrayBuffer, quality?: number): ScanResult',
+    );
+    expect(facade).toContain('export interface ScanResult');
+    expect(facade).toContain('note?: string | null');
+    expect(implementation).toContain('if (info.Length() < 1)');
+    expect(implementation).toContain('Napi::Value quality = info.Length() > 1');
+    expect(implementation).toContain('return Napi::Object::New(env);');
+  });
+
+  it('requires optional parameters to follow required parameters', () => {
+    expect(() =>
+      parseNativeModules(
+        `/** @lynxmodule */
+export declare class BadModule {
+  scan(quality?: number, image: ArrayBuffer): void;
+}
+`,
+        'types/native-module.d.ts',
+      )
+    ).toThrow(/cannot follow an optional parameter/);
+  });
+
   it('generates JS, Android, and iOS specs', () => {
     const root = createFixture({
       manifest: {
@@ -177,7 +239,7 @@ export declare class StorageModule {
       'ios/src/generated/StorageModuleSpec.h',
       'ios/src/generated/StorageModuleSpec.m',
     ].sort());
-    expect(files[0]?.content).toContain('NativeModules.StorageModule');
+    expect(files[0]?.content).toContain('nativeModules?.[ADDON_NAME]');
     expect(files[1]?.content).toContain(
       'package com.example.storage.generated;',
     );
@@ -377,6 +439,7 @@ export declare class StorageNapiModule {
       'lynxtron/generated_napi_registration.cc',
       'shared/nativeModule/CMakeLists.txt',
       'shared/nativeModule/StorageNapiModule.cc',
+      'shared/nativeModule/generated/StorageNapiModuleRegistration.cc',
     ].sort());
     expect(
       files.find((file) =>
@@ -386,12 +449,19 @@ export declare class StorageNapiModule {
     expect(
       files.find((file) =>
         file.path === 'ios/generated/StorageNapiModuleNapiWrapper.cc'
+      )?.content,
+    ).toContain(
+      '#include "../../shared/nativeModule/generated/StorageNapiModuleRegistration.cc"',
+    );
+    expect(
+      files.find((file) =>
+        file.path === 'ios/generated/StorageNapiModuleNapiWrapper.cc'
       )?.overwrite,
     ).toBeUndefined();
     expect(
       files.find((file) => file.path === 'shared/nativeModule/CMakeLists.txt')
         ?.overwrite,
-    ).toBe(false);
+    ).toBeUndefined();
     expect(
       files.find((file) => file.path === 'shared/nativeModule/CMakeLists.txt')
         ?.content,
@@ -405,20 +475,29 @@ export declare class StorageNapiModule {
       /if\(LYNX_LIBRARY_NODE_API_WEAK_SUFFIX\)\s+target_include_directories/,
     );
     expect(
-      files.find((file) =>
-        file.path === 'shared/nativeModule/StorageNapiModule.cc'
-      )?.content,
-    ).toContain('NAPI_MODULE(StorageNapiModule');
+      files.find((file) => file.path === 'shared/nativeModule/CMakeLists.txt')
+        ?.content,
+    ).toContain(
+      'if(LYNX_LIBRARY_USE_PRIMJS_NAPI_MODULE)',
+    );
     expect(
-      files.find((file) =>
-        file.path === 'shared/nativeModule/StorageNapiModule.cc'
-      )?.content,
-    ).toContain('#ifdef LYNX_LIBRARY_USE_PRIMJS_NAPI_MODULE');
+      files.find((file) => file.path === 'shared/nativeModule/CMakeLists.txt')
+        ?.content,
+    ).toContain(
+      'LYNX_LIBRARY_USE_PRIMJS_NAPI_MODULE=1',
+    );
     expect(
-      files.find((file) =>
-        file.path === 'shared/nativeModule/StorageNapiModule.cc'
-      )?.content,
-    ).toContain('static napi_module _module_##modname');
+      files.find((file) => file.path === 'shared/nativeModule/CMakeLists.txt')
+        ?.content,
+    ).toContain(
+      '${LYNX_SHARED_PLATFORM_COMPILE_DEFINITIONS}',
+    );
+    expect(
+      files.find((file) => file.path === 'shared/nativeModule/CMakeLists.txt')
+        ?.content,
+    ).toContain(
+      '${LYNX_SHARED_PLATFORM_LINK_LIBRARIES}',
+    );
     expect(
       files.find((file) =>
         file.path === 'shared/nativeModule/StorageNapiModule.cc'
@@ -433,17 +512,19 @@ export declare class StorageNapiModule {
       files.find((file) =>
         file.path === 'shared/nativeModule/StorageNapiModule.cc'
       )?.content,
-    ).toContain('LYNX_LIBRARY_USE_PRIMJS_NAPI_MODULE');
+    ).not.toContain('napi_module_register');
     expect(
       files.find((file) =>
-        file.path === 'shared/nativeModule/StorageNapiModule.cc'
+        file.path
+          === 'shared/nativeModule/generated/StorageNapiModuleRegistration.cc'
       )?.content,
-    ).toContain('napi_module_register(&_module_##modname)');
+    ).toContain('napi_module_register(&g_module)');
     expect(
       files.find((file) =>
-        file.path === 'shared/nativeModule/StorageNapiModule.cc'
+        file.path
+          === 'shared/nativeModule/generated/StorageNapiModuleRegistration.cc'
       )?.content,
-    ).not.toContain('napi_module_register_xx');
+    ).toContain('_napi_register_xx_StorageNapiModule');
     expect(
       files.find((file) =>
         file.path === 'shared/nativeModule/StorageNapiModule.cc'
@@ -547,11 +628,51 @@ export declare class StorageNapiModule {
     expect(
       files.find((file) => file.path === 'generated/StorageNapiModule.ts')
         ?.content,
-    ).toContain('nativeModules !== undefined');
+    ).toContain('lynx.getModuleLoader?.()');
     expect(
       files.find((file) => file.path === 'generated/StorageNapiModule.ts')
         ?.content,
     ).toContain('__lynxNapiLoader');
+    expect(
+      files.find((file) => file.path === 'generated/StorageNapiModule.ts')
+        ?.content,
+    ).toMatch(
+      /let nativeModulesBeforeShim: Record<string, unknown> \| undefined;[\s\S]*function installStorageNapiModuleShim\(\): void \{\s+nativeModulesBeforeShim = getNativeModules\(\);/,
+    );
+    expect(
+      files.find((file) => file.path === 'generated/StorageNapiModule.ts')
+        ?.content,
+    ).toContain('setNativeModules(new Proxy({}, {');
+    expect(
+      files.find((file) => file.path === 'generated/StorageNapiModule.ts')
+        ?.content,
+    ).toMatch(
+      /Reflect\.get\(nativeModulesBeforeShim, property\);[\s\S]*return existingModule;[\s\S]*const loadResult = tryLoadNodeApiAddon\(\);[\s\S]*return loadResult\.addon;/,
+    );
+    expect(
+      files.find((file) => file.path === 'generated/StorageNapiModule.ts')
+        ?.content,
+    ).toMatch(
+      /const existingModule = nativeModulesBeforeShim === undefined[\s\S]*if \(existingModule !== undefined && existingModule !== null\)[\s\S]*return existingModule;[\s\S]*throw loadResult\.error;/,
+    );
+    expect(
+      files.find((file) => file.path === 'generated/StorageNapiModule.ts')
+        ?.content,
+    ).toMatch(
+      /const nativeModules = nativeModulesBeforeShim;[\s\S]*return existingModule as StorageNapiModuleSpec;[\s\S]*const loadResult = tryLoadNodeApiAddon\(\);[\s\S]*throw loadResult\.error;/,
+    );
+    expect(
+      files.find((file) => file.path === 'generated/StorageNapiModule.ts')
+        ?.content,
+    ).toContain('Reflect.get(nativeModulesBeforeShim, property)');
+    expect(
+      files.find((file) => file.path === 'generated/StorageNapiModule.ts')
+        ?.content,
+    ).not.toContain('new Proxy(nativeModules');
+    expect(
+      files.find((file) => file.path === 'generated/StorageNapiModule.ts')
+        ?.content,
+    ).not.toContain('Object.defineProperty(nativeModules');
     expect(
       files.find((file) => file.path === 'generated/StorageNapiModule.ts')
         ?.content,
@@ -640,7 +761,7 @@ export declare class SecondModule {
     );
 
     expect(() => generate({ root })).toThrow(
-      /Only one NAPI native module declaration is supported/,
+      /Only one Node-API native module declaration is supported/,
     );
   });
 
@@ -692,6 +813,14 @@ export declare class StorageNapiModule {
       'android/src/main/java/com/example/storage/generated/StorageNapiModuleSpec.java',
     );
     expect(paths).not.toContain('ios/src/generated/StorageNapiModuleSpec.h');
+    expect(
+      files.find((file) => file.path === 'generated/StoragePlatformModule.ts')
+        ?.content,
+    ).not.toContain('setNativeModules(new Proxy');
+    expect(
+      files.find((file) => file.path === 'generated/StorageNapiModule.ts')
+        ?.content,
+    ).toContain('setNativeModules(new Proxy');
   });
 
   it('writes generated files from a temp library package', () => {
